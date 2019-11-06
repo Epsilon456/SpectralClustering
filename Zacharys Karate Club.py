@@ -132,6 +132,7 @@ def Cluster(E,V,k):
     #Return the array of labels.
     return result
         
+
 #Obtain the Adjacency matrix from the file
 A = AdjFromFile(AMatFile)
 #Obtain the Labels from the other file.
@@ -141,10 +142,22 @@ E,V = Eigen(A)
 #Run the spectral clustering algorithm.
 Result = Cluster(E,V,2)
 
+#The initial data set categorized the karate students as class "0" and class "1".
+    #When using KMeans clustering, the students are split into two clusters before labels
+    #are arbitrarily given. The result is that the students will be correctly split, but a class
+    #but the names "0" and "1" can just as easily be reversed.  To standardize this for the purpose
+    #of error checking, we are calling whatever class student "0" is (who is one of the instructors
+    #who caused the split) as class "0".  Student "33" is the other instructor who formed class "1".
+
+Dictionary = {Result[0]:F[0],Result[-1]:F[-1]}
+
+
+
+
 #Print the actual and predicted labels for each node.
 print("Node","Actual","Prediction")
 for i in range(len(F)):
-    print(i,"\t",F[i],Result[i])
+    print(i,"\t",F[i],Dictionary[Result[i]])
 
 #Plot the results of the graph
 Eigenplot(A,Result)
